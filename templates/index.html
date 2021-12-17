@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Spoti-Guess</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <STYLE>a{text-decoration: none;} </STYLE>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>{{user.display_name}}</h1>
+        </div>
+        <div class="col">
+            <img src="{{user.images[0].url}}" alt="{{user.display_name}}">
+        </div>
+    </div>
+    <hr>
+    {% for item_batched in top_tracks|batch(3) %}
+        <div class="row fluid">
+            {%  for tracks in item_batched %}
+                <div class="col text-center" style="padding-top:5px;margin:2px;border:2px solid black;background-color:#808080;color:#000000;">
+                    <img class="img-fluid" style="border:1px solid black;" src="{{tracks.album.images[1].url}}" width="{{tracks.album.images[1].width}}" height="{{tracks.album.images[1].height}}">
+                    <p class="h3" style="border:1px solid black;border-radius:3px;background-color:#1DB954;"><a href="{{tracks.external_urls.spotify}}">{{tracks.name}}</a></h3>
+                    <p ><a href="{{tracks.album.artists[0].external_urls.spotify}}">{{tracks.artists[0].name}}</a></p>
+                    <audio src="{{tracks.preview_url}}#t=00:00:{{duration}}" controls></audio>
+                    <h3>Popularity: {{tracks.popularity}}</h3>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col">
+            <a href="{{url_for('index',page=p+1)}}"><button  {% if p > end %}disabled{% endif %}>Next</button></a>
+            <a href="{{url_for('index',page=p-1)}}"><button {% if p < 0 %}disabled{% endif %}>Previous</button></a>
+        </div>
+        <div class="col">
+            
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
